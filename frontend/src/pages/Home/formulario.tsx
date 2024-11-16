@@ -1,8 +1,8 @@
 import { ChangeEvent, useState } from 'react';
+import Button from '../../components/formulario/Button';
 import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
 import Select from '../../components/formulario/Select';
-
 
 interface FormData {
     nome: string;
@@ -43,6 +43,7 @@ export const FormularioPage = () =>
     {
         console.log("oi");
     }
+    
     const estados = [
         { value: 'SP', label: 'São Paulo' },
         { value: 'RJ', label: 'Rio de Janeiro' },
@@ -59,7 +60,15 @@ export const FormularioPage = () =>
     
     return(
         <>
-            <form onSubmit={handleSubmit}>
+        <div 
+            style={{
+                display: "flex", 
+                justifyContent: "center", 
+                alignItems: "center", 
+                height: "100vh"
+            }}
+        >
+            <form onSubmit={handleSubmit} style={{width:"50%"}}>
                 <Input label="Nome completo" type="text" name="nome" value={formData.nome} onChange={handleChange}/>
                 <Input label='Email' type='email' name='email' value={formData.email} onChange={handleChange}/>
                 <Input label='Telefone' type='text' name='telefone' value={formData.telefone} onChange={handleChange}/>
@@ -83,10 +92,18 @@ export const FormularioPage = () =>
                         <Input label="CPF" type="text" name="cpf" value={formData.cpf ?? ''} onChange={handleChange}/>
                     ):
                     (
-                        <Input label="CNPJ" type="text" name="cnpj" value={formData.cnpj ?? ''} onChange={handleChange}/>
+                        <>
+                            <Input label="CNPJ" type="text" name="cnpj" value={formData.cnpj ?? ''} onChange={handleChange}/>
+                            <Input label="Razão Social" type="text" name="razaoSocial" value={formData.razaoSocial ?? ''} onChange={handleChange}/>
+                            <Input label="Nome fantasia" type="text" name="nomeFantasia" value={formData.nomeFantasia ?? ''} onChange={handleChange}/>
+                        </>
+                        
                     )
                 }
+                <Button type="submit" value="Cadastrar" />
+
             </form>
+            </div>
          
         </>
     )
