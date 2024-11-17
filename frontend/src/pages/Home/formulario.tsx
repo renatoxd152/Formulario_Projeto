@@ -4,14 +4,15 @@ import { Controller, useForm } from 'react-hook-form';
 import Button from '../../components/formulario/Button';
 import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
-import Select from '../../components/formulario/Select';
+import SearchBar from '../../components/formulario/Select';
 import { buscarCep, buscarCNPJ } from '../../services/Api';
+import { estados, tipoPessoaOptions } from '../../tests/mocks/Dados';
 import { formatCEP, formatCNPJ, formatCPF, formatTelefone } from '../../utils/Funcoes';
 import { schema } from '../../utils/yup';
 
 interface FormData {
     nome: string;
-    email: string;
+    email?: string;
     telefone: string;
     cep: string;
     endereco: string;
@@ -40,12 +41,12 @@ export const FormularioPage = () => {
     const tipoPessoa = watch('tipoPessoa');
 
     const onSubmit = (data: FormData) => {
-        console.log(data);
+        console.log("Dados do formulário: \n",data);
     };
    
     const handleBlurCep = async (cep: string) => {
-        if (cep.length < 8) return;
-      
+        if (!cep || cep.length < 8) return;
+    
         try {
             const data = await buscarCep(cep);
             setValue('endereco', data.logradouro || '');
@@ -57,6 +58,7 @@ export const FormularioPage = () => {
             console.error('Erro ao buscar CEP:', error);
         }
     };
+    
 
     const handleBlurCNPJ = async (cnpj: string) => {
         
@@ -78,40 +80,7 @@ export const FormularioPage = () => {
         }
     };
     
-    const estados = [
-        { value: 'AC', label: 'AC' },
-        { value: 'AL', label: 'AL' },
-        { value: 'AP', label: 'AP' },
-        { value: 'AM', label: 'AM' },
-        { value: 'BA', label: 'BA' },
-        { value: 'CE', label: 'CE' },
-        { value: 'DF', label: 'DF' },
-        { value: 'ES', label: 'ES' },
-        { value: 'GO', label: 'GO' },
-        { value: 'MA', label: 'MA' },
-        { value: 'MT', label: 'MT' },
-        { value: 'MS', label: 'MS' },
-        { value: 'MG', label: 'MG' },
-        { value: 'PA', label: 'PA' },
-        { value: 'PB', label: 'PB' },
-        { value: 'PR', label: 'PR' },
-        { value: 'PE', label: 'PE' },
-        { value: 'PI', label: 'PI' },
-        { value: 'RJ', label: 'RJ' },
-        { value: 'RN', label: 'RN' },
-        { value: 'RS', label: 'RS' },
-        { value: 'RO', label: 'RO' },
-        { value: 'RR', label: 'RR' },
-        { value: 'SC', label: 'SC' },
-        { value: 'SP', label: 'SP' },
-        { value: 'SE', label: 'SE' },
-        { value: 'TO', label: 'TO' },
-    ];
-    const tipoPessoaOptions = [
-        { value: 'fisica', label: 'Pessoa Física' },
-        { value: 'juridica', label: 'Pessoa Jurídica' },
-    ];
-
+    
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '50%', maxHeight: '90vh', overflowY: 'auto' }}>
@@ -190,7 +159,7 @@ export const FormularioPage = () => {
                     name="estado"
                     control={control}
                     render={({ field }) => (
-                        <Select label="Estado" {...field} options={estados} error={errors.estado?.message} disabled={isDisabled}/>
+                        <SearchBar label="Estado" {...field} options={estados} error={errors.estado?.message} disabled={isDisabled}/>
                     )}
                 />
                 <Controller
