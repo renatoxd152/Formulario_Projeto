@@ -1,5 +1,3 @@
-// services/cepService.ts
-
 export const buscarCep = async (cep: string) => {
     const url = `https://viacep.com.br/ws/${cep}/json/`;
     
@@ -19,17 +17,11 @@ export const buscarCep = async (cep: string) => {
 };
 
 export const buscarCNPJ = async (cnpj: string) => {
-    const url = `https://receitaws.com.br/v1/cnpj/${cnpj}`;
-    
+    const url = `http://localhost:3001/api/cnpj/${cnpj}`;
     try {
-        const response = await fetch(url,{
-            mode:"no-cors"
-        });
-        const data = await response.json();
-        if (data.erro) {
-            throw new Error('CNPJ não encontrado.');
-        }  
-        return data;
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('Erro ao buscar CNPJ');
+        return await response.json();
     } catch (error) {
         console.error('Erro ao buscar CNPJ:', error);
         throw error;
