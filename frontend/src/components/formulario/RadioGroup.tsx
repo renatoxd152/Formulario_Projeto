@@ -4,11 +4,12 @@ interface RadioGroupProps {
     label: string; 
     name: string;
     value: string;
+    error?: string;
     onChange: (e: ChangeEvent<HTMLInputElement>) => void; 
     options: { value: string; label: string }[];
 }
 
-const RadioGroup = ({ label, name, value, onChange, options }:RadioGroupProps) => {
+const RadioGroup = ({ label, name, value, onChange, options, error }:RadioGroupProps) => {
     return (
         <div className="form-group">
             <label>{label}</label>
@@ -26,6 +27,7 @@ const RadioGroup = ({ label, name, value, onChange, options }:RadioGroupProps) =
                         <label className="form-check-label">{option.label}</label>
                     </div>
                 ))}
+            {error && <span className="text-danger">{error}</span>}
             </div>
         </div>
     );

@@ -1,8 +1,10 @@
-import { ChangeEvent, useState } from 'react';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Controller, useForm } from 'react-hook-form';
 import Button from '../../components/formulario/Button';
 import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
 import Select from '../../components/formulario/Select';
+import { schema } from '../../utils/yup';
 
 interface FormData {
     nome: string;
@@ -11,7 +13,7 @@ interface FormData {
     cep: string;
     endereco: string;
     numero: string;
-    complemento: string;
+    complemento?: string;
     bairro: string;
     estado: string;
     cidade: string;
@@ -22,89 +24,158 @@ interface FormData {
     nomeFantasia?: string;
 }
 
-export const FormularioPage = () =>
-{
-    const [formData, setFormData] = useState<FormData>({ 
-            nome: '', 
-            email: '', 
-            telefone: '',
-            cep: '',
-            endereco: '', 
-            numero: '', 
-            complemento: '', 
-            bairro: '', estado: '',
-            cidade: '', tipoPessoa: 'juridica', 
-            cpf: '', cnpj: '', 
-            razaoSocial: '', 
-            nomeFantasia: '' }
-    );
 
-    const handleSubmit = () =>
-    {
-        console.log("oi");
-    }
+export const FormularioPage = () => {
+    const { control, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
+        resolver: yupResolver(schema),
+        defaultValues: {
+            tipoPessoa: 'juridica',
+        },
+    });
     
+
+    const tipoPessoa = watch('tipoPessoa');
+
+    const onSubmit = (data: FormData) => {
+        console.log(data);
+    };
+
     const estados = [
         { value: 'SP', label: 'São Paulo' },
         { value: 'RJ', label: 'Rio de Janeiro' },
         { value: 'MG', label: 'Minas Gerais' },
         { value: 'ES', label: 'Espírito Santo' },
     ];
+
     const tipoPessoaOptions = [
         { value: 'fisica', label: 'Pessoa Física' },
         { value: 'juridica', label: 'Pessoa Jurídica' },
     ];
-    const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
-    };
-    
-    return(
-        <>
-        <div 
-            style={{
-                display: "flex", 
-                justifyContent: "center", 
-                alignItems: "center", 
-                height: "100vh"
-            }}
-        >
-            <form onSubmit={handleSubmit} style={{width:"50%"}}>
-                <Input label="Nome completo" type="text" name="nome" value={formData.nome} onChange={handleChange}/>
-                <Input label='Email' type='email' name='email' value={formData.email} onChange={handleChange}/>
-                <Input label='Telefone' type='text' name='telefone' value={formData.telefone} onChange={handleChange}/>
-                <Input label='CEP' type='text' name='cep' value={formData.cep} onChange={handleChange}/>
-                <Input label='Endereço' type='text' name='endereco' value={formData.endereco} onChange={handleChange}/>
-                <Input label='Número' type='text' name='numero' value={formData.numero} onChange={handleChange}/>
-                <Input label='Complemento' type='text' name='complemento' value={formData.complemento} onChange={handleChange}/>
-                <Input label='Bairro' type='text' name='bairro' value={formData.bairro} onChange={handleChange}/>
-                <Select label='Estado' name='estado' value={formData.estado} options={estados} onChange={handleChange}/>
-                <Input label='Cidade' type='text' name='cidade' value={formData.cidade} onChange={handleChange}/>
-                <RadioGroup
-                    label="Tipo de Pessoa"
-                    name="tipoPessoa"
-                    value={formData.tipoPessoa}
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-                    options={tipoPessoaOptions}
-                />
-                {
-                    formData.tipoPessoa === 'fisica' ?
-                    (
-                        <Input label="CPF" type="text" name="cpf" value={formData.cpf ?? ''} onChange={handleChange}/>
-                    ):
-                    (
-                        <>
-                            <Input label="CNPJ" type="text" name="cnpj" value={formData.cnpj ?? ''} onChange={handleChange}/>
-                            <Input label="Razão Social" type="text" name="razaoSocial" value={formData.razaoSocial ?? ''} onChange={handleChange}/>
-                            <Input label="Nome fantasia" type="text" name="nomeFantasia" value={formData.nomeFantasia ?? ''} onChange={handleChange}/>
-                        </>
-                        
-                    )
-                }
-                <Button type="submit" value="Cadastrar" />
 
+    return (
+        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+            <form onSubmit={handleSubmit(onSubmit)} style={{ width: '50%', maxHeight: '90vh', overflowY: 'auto' }}>
+                <Controller
+                    name="nome"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Nome completo" type="text" {...field} error={errors.nome?.message} />
+                    )}
+                />
+                <Controller
+                    name="email"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Email" type="email" {...field} error={errors.email?.message} />
+                    )}
+                />
+                <Controller
+                    name="telefone"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Telefone" type="text" {...field} error={errors.telefone?.message} />
+                    )}
+                />
+                <Controller
+                    name="cep"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="CEP" type="text" {...field} error={errors.cep?.message} maxLength={9} />
+                    )}
+                />
+                <Controller
+                    name="endereco"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Endereço" type="text" {...field} error={errors.endereco?.message} />
+                    )}
+                />
+                <Controller
+                    name="numero"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Número" type="text" {...field} error={errors.numero?.message} />
+                    )}
+                />
+                <Controller
+                    name="complemento"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Complemento" type="text" {...field} />
+                    )}
+                />
+                <Controller
+                    name="bairro"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Bairro" type="text" {...field} error={errors.bairro?.message} />
+                    )}
+                />
+                <Controller
+                    name="estado"
+                    control={control}
+                    render={({ field }) => (
+                        <Select label="Estado" {...field} options={estados} error={errors.estado?.message} />
+                    )}
+                />
+                <Controller
+                    name="cidade"
+                    control={control}
+                    render={({ field }) => (
+                        <Input label="Cidade" type="text" {...field} error={errors.cidade?.message} />
+                    )}
+                />
+                <Controller
+                    name="tipoPessoa"
+                    control={control}
+                    render={({ field }) => (
+                        <RadioGroup
+                            label="Tipo de Pessoa"
+                            name="tipoPessoa"
+                            value={field.value}
+                            onChange={field.onChange}
+                            options={tipoPessoaOptions}
+                            error={errors.tipoPessoa?.message} 
+                        />
+                    )}
+                />
+
+                {tipoPessoa === 'fisica' && (
+                    <Controller
+                        name="cpf"
+                        control={control}
+                        render={({ field }) => (
+                            <Input label="CPF" type="text" {...field} error={errors.cpf?.message} />
+                        )}
+                    />
+                )}
+                {tipoPessoa === 'juridica' && (
+                    <>
+                        <Controller
+                            name="cnpj"
+                            control={control}
+                            render={({ field }) => (
+                                <Input label="CNPJ" type="text" {...field} error={errors.cnpj?.message} />
+                            )}
+                        />
+                        <Controller
+                            name="razaoSocial"
+                            control={control}
+                            render={({ field }) => (
+                                <Input label="Razão Social" type="text" {...field} error={errors.razaoSocial?.message} />
+                            )}
+                        />
+                        <Controller
+                            name="nomeFantasia"
+                            control={control}
+                            render={({ field }) => (
+                                <Input label="Nome Fantasia" type="text" {...field} error={errors.nomeFantasia?.message} />
+                            )}
+                        />
+                    </>
+                )}
+                <Button type="submit" value="Cadastrar" />
             </form>
-            </div>
-         
-        </>
-    )
-}
+        </div>
+    );
+};
