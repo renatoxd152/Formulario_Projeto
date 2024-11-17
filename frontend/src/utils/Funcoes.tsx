@@ -34,13 +34,14 @@ export const formatCNPJ = (value: string): string => {
         return value.slice(0, 2) + '.' + value.slice(2, 5);
     }
     if (value.length <= 8) {
-        return value.slice(0, 5) + '.' + value.slice(5, 8);
+        return value.slice(0, 2) + '.' + value.slice(2, 5) + '.' + value.slice(5, 8);
     }
     if (value.length <= 12) {
-        return value.slice(0, 8) + '/' + value.slice(8, 12);
+        return value.slice(0, 2) + '.' + value.slice(2, 5) + '.' + value.slice(5, 8) + '/' + value.slice(8, 12);
     }
-    return value.slice(0, 12) + '-' + value.slice(12, 14);
+    return value.slice(0, 2) + '.' + value.slice(2, 5) + '.' + value.slice(5, 8) + '/' + value.slice(8, 12) + '-' + value.slice(12, 14);
 };
+
 export const formatTelefone = (value: string): string => {
     
     value = value.replace(/\D/g, '');
