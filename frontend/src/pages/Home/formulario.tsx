@@ -4,8 +4,8 @@ import Button from '../../components/formulario/Button';
 import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
 import Select from '../../components/formulario/Select';
+import { formatCEP, formatCNPJ, formatCPF, formatTelefone } from '../../utils/Funcoes';
 import { schema } from '../../utils/yup';
-
 interface FormData {
     nome: string;
     email: string;
@@ -73,14 +73,28 @@ export const FormularioPage = () => {
                     name="telefone"
                     control={control}
                     render={({ field }) => (
-                        <Input label="Telefone" type="text" {...field} error={errors.telefone?.message} />
+                        <Input label="Telefone" type="text" {...field} error={errors.telefone?.message}
+                        onChange={(e) => {
+                            field.onChange(formatTelefone(e.target.value));
+                        }}
+                        value={field.value || ''} />
                     )}
                 />
                 <Controller
                     name="cep"
                     control={control}
                     render={({ field }) => (
-                        <Input label="CEP" type="text" {...field} error={errors.cep?.message} maxLength={9} />
+                        <Input
+                            label="CEP"
+                            type="text"
+                            {...field}
+                            error={errors.cep?.message}
+                            maxLength={9}
+                            onChange={(e) => {
+                                field.onChange(formatCEP(e.target.value));
+                            }}
+                            value={field.value || ''}
+                        />
                     )}
                 />
                 <Controller
@@ -141,21 +155,41 @@ export const FormularioPage = () => {
                 />
 
                 {tipoPessoa === 'fisica' && (
-                    <Controller
-                        name="cpf"
-                        control={control}
-                        render={({ field }) => (
-                            <Input label="CPF" type="text" {...field} error={errors.cpf?.message} />
-                        )}
-                    />
+                   <Controller
+                   name="cpf"
+                   control={control}
+                   render={({ field }) => (
+                       <Input
+                           label="CPF"
+                           type="text"
+                           {...field}
+                           error={errors.cpf?.message}
+                           maxLength={14}
+                           onChange={(e) => {
+                               field.onChange(formatCPF(e.target.value));
+                           }}
+                           value={field.value || ''}
+                       />
+                   )}
+               />
                 )}
                 {tipoPessoa === 'juridica' && (
                     <>
-                        <Controller
+                       <Controller
                             name="cnpj"
                             control={control}
                             render={({ field }) => (
-                                <Input label="CNPJ" type="text" {...field} error={errors.cnpj?.message} />
+                                <Input
+                                    label="CNPJ"
+                                    type="text"
+                                    {...field}
+                                    error={errors.cnpj?.message}
+                                    maxLength={18}
+                                    onChange={(e) => {
+                                        field.onChange(formatCNPJ(e.target.value));
+                                    }}
+                                    value={field.value || ''}
+                                />
                             )}
                         />
                         <Controller
