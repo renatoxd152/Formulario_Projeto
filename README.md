@@ -8,12 +8,12 @@ Essas instruções permitirão que você obtenha uma cópia do projeto em opera�
 
 ### 📋 Passo a passo
 
--Primeiramente, clone o projeto.
--Após isso, entre com o terminal usando o comando "cd backend" para entrar na pasta do servidor.
--Insira o comando, "npm install", para instalar as dependências do projeto.
--Agora, escreva "npm start" para rodar o servidor.
--Abra outro terminal e escreva "cd frontend".
--Escreva "npm install" para instalar as dependências do frontend.
--A última etapa é escrever "npm start".
+- Primeiramente, clone o projeto.
+- Após isso, entre com o terminal usando o comando `cd backend` para entrar na pasta do servidor.
+- Insira o comando `npm install` para instalar as dependências do projeto.
+- Agora, escreva `npm start` para rodar o servidor.
+- Abra outro terminal e escreva `cd frontend`.
+- Escreva `npm install` para instalar as dependências do frontend.
+- A última etapa é escrever `npm start`.
 
-###Pronto agora basta testar o projeto localmente e aproveite 🙂
+### Pronto! Agora basta testar o projeto localmente e aproveite 🙂
