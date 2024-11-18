@@ -7,6 +7,7 @@ import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
 import SearchBar from '../../components/formulario/Select';
 import { buscarCep, buscarCNPJ } from '../../services/Api';
+import '../../styles/Estilos.css';
 import { formatCEP, formatCNPJ, formatCPF, formatTelefone } from '../../utils/Funcoes';
 import { schema } from '../../utils/yup';
 import { FormData } from './Interface';
@@ -66,13 +67,18 @@ export const FormularioPage = () => {
     return (
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
             <form onSubmit={handleSubmit(onSubmit)} style={{ width: '50%', maxHeight: '90vh', overflowY: 'auto' }}>
+            <h3 className="card-title text-center mb-4">Formulário de Cadastro</h3>
+            <div className="row">
+            <div className="col-md-6">
                 <Controller
                     name="nome"
                     control={control}
                     render={({ field }) => (
-                        <Input label="Nome completo" type="text" {...field} error={errors.nome?.message} />
+                        <Input label="Nome completo"  type="text" {...field} error={errors.nome?.message} />
                     )}
                 />
+            </div>
+            <div className="col-md-6">
                 <Controller
                     name="email"
                     control={control}
@@ -80,6 +86,8 @@ export const FormularioPage = () => {
                         <Input label="Email" type="email" {...field} error={errors.email?.message} />
                     )}
                 />
+            </div>
+            <div className="col-md-6">
                 <Controller
                     name="telefone"
                     control={control}
@@ -91,6 +99,8 @@ export const FormularioPage = () => {
                             value={field.value || ''} />
                     )}
                 />
+            </div>
+            <div className="col-md-6">
                 <Controller
                     name="cep"
                     control={control}
@@ -109,13 +119,17 @@ export const FormularioPage = () => {
                         />
                     )}
                 />
-                <Controller
-                    name="endereco"
-                    control={control}
-                    render={({ field }) => (
-                        <Input label="Endereço" type="text" {...field} error={errors.endereco?.message} disabled={isDisabled}/>
-                    )}
-                />
+                </div> 
+                <div className="col-md-6">
+                    <Controller
+                        name="endereco"
+                        control={control}
+                        render={({ field }) => (
+                            <Input label="Endereço" type="text" {...field} error={errors.endereco?.message} disabled={isDisabled}/>
+                        )}
+                    />
+                </div>
+                <div className="col-md-6">
                 <Controller
                     name="numero"
                     control={control}
@@ -123,13 +137,17 @@ export const FormularioPage = () => {
                         <Input label="Número" type="text" {...field} error={errors.numero?.message} />
                     )}
                 />
-                <Controller
-                    name="complemento"
-                    control={control}
-                    render={({ field }) => (
-                        <Input label="Complemento" type="text" {...field} />
-                    )}
-                />
+                </div>
+                <div className="col-md-6">
+                    <Controller
+                        name="complemento"
+                        control={control}
+                        render={({ field }) => (
+                            <Input label="Complemento" type="text" {...field} />
+                        )}
+                    />
+                </div>
+                <div className="col-md-6">
                 <Controller
                     name="bairro"
                     control={control}
@@ -137,6 +155,8 @@ export const FormularioPage = () => {
                         <Input label="Bairro" type="text" {...field} error={errors.bairro?.message} disabled={isDisabled}/>
                     )}
                 />
+                </div>
+                <div className="col-md-6">
                 <Controller
                     name="estado"
                     control={control}
@@ -144,6 +164,8 @@ export const FormularioPage = () => {
                         <SearchBar label="Estado" {...field} options={estados} error={errors.estado?.message} disabled={isDisabled}/>
                     )}
                 />
+                </div>
+                <div className="col-md-6">
                 <Controller
                     name="cidade"
                     control={control}
@@ -151,6 +173,7 @@ export const FormularioPage = () => {
                         <Input label="Cidade" type="text" {...field} error={errors.cidade?.message} disabled={isDisabled}/>
                     )}
                 />
+                </div>
                 <Controller
                     name="tipoPessoa"
                     control={control}
@@ -165,62 +188,85 @@ export const FormularioPage = () => {
                         />
                     )}
                 />
-                {tipoPessoa === 'fisica' && (
-                    <Controller
-                        name="cpf"
-                        control={control}
-                        render={({ field }) => (
-                            <Input
-                                label="CPF"
-                                type="text"
-                                {...field}
-                                error={errors.cpf?.message}
-                                maxLength={14}
-                                onChange={(e) => {
-                                    field.onChange(formatCPF(e.target.value));
-                                }}
-                                value={field.value || ''}
+                {tipoPessoa === 'fisica' ? (
+                    <div className="row">
+                        <div className="col-md-6">
+                            <Controller
+                                name="cpf"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        label="CPF"
+                                        type="text"
+                                        {...field}
+                                        error={errors.cpf?.message}
+                                        maxLength={14}
+                                        onChange={(e) => {
+                                            field.onChange(formatCPF(e.target.value));
+                                        }}
+                                        value={field.value || ''}
+                                    />
+                                )}
                             />
-                        )}
-                    />
-                )}
-                {tipoPessoa === 'juridica' && (
+                        </div>
+                    </div>
+                ) : (
                     <>
-                        <Controller
-                            name="cnpj"
-                            control={control}
-                            render={({ field }) => (
-                                <Input
-                                    label="CNPJ"
-                                    type="text"
-                                    {...field}
-                                    error={errors.cnpj?.message}
-                                    maxLength={18}
-                                    onChange={(e) => {
-                                        field.onChange(formatCNPJ(e.target.value));
-                                    }}
-                                    onBlur={() => handleBlurCNPJ(field.value || '')}
-                                    value={field.value || ''}
-                                />
-                            )}
-                        />
-                        <Controller
-                            name="razaoSocial"
-                            control={control}
-                            render={({ field }) => (
-                                <Input label="Razão Social" type="text" {...field} error={errors.razaoSocial?.message} disabled={isDisabledCNPJ}/>
-                            )}
-                        />
-                        <Controller
-                            name="nomeFantasia"
-                            control={control}
-                            render={({ field }) => (
-                                <Input label="Nome Fantasia" type="text" {...field} error={errors.nomeFantasia?.message} disabled={isDisabledCNPJ}/>
-                            )}
-                        />
+                        <div className="col-md-6">
+                            <Controller
+                                name="cnpj"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        label="CNPJ"
+                                        type="text"
+                                        {...field}
+                                        error={errors.cnpj?.message}
+                                        maxLength={18}
+                                        onChange={(e) => {
+                                            field.onChange(formatCNPJ(e.target.value));
+                                        }}
+                                        onBlur={() => handleBlurCNPJ(field.value || '')}
+                                        value={field.value || ''}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <Controller
+                                name="razaoSocial"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        label="Razão Social"
+                                        type="text"
+                                        {...field}
+                                        error={errors.razaoSocial?.message}
+                                        disabled={isDisabledCNPJ}
+                                    />
+                                )}
+                            />
+                        </div>
+                        <div className="col-md-6">
+                            <Controller
+                                name="nomeFantasia"
+                                control={control}
+                                render={({ field }) => (
+                                    <Input
+                                        label="Nome Fantasia"
+                                        type="text"
+                                        {...field}
+                                        error={errors.nomeFantasia?.message}
+                                        disabled={isDisabledCNPJ}
+                                    />
+                                )}
+                            />
+                        </div>
                     </>
                 )}
+
                 <Button type="submit" value="Cadastrar" />
+                </div>
             </form>
         </div>
     );
