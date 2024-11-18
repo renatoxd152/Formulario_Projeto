@@ -1,18 +1,4 @@
-import { ChangeEvent, FocusEvent } from 'react';
-
-interface InputProps {
-    label: string;
-    type: string;
-    name: string;
-    value: string | undefined;
-    maxLength?: number;
-    error?: string;
-    disabled?:boolean;
-    onBlur?: (e: FocusEvent<HTMLInputElement>) => void;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void;
-}
-
-
+import { InputProps } from "./InterfaceComponents";
 
 const Input = ({ label, type, name, value, onChange, maxLength, error, onBlur, disabled }: InputProps) => {
     return (

@@ -1,7 +1,4 @@
-interface ButtonProps { 
-    type: 'button' | 'submit' | 'reset';
-    value: string; 
-}
+import { ButtonProps } from "./InterfaceComponents";
 
 const Button = ({ type, value }: ButtonProps) => { 
     return ( 

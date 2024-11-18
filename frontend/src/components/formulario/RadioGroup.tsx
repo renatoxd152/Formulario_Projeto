@@ -1,13 +1,4 @@
-import { ChangeEvent } from 'react';
-
-interface RadioGroupProps {
-    label: string; 
-    name: string;
-    value: string;
-    error?: string;
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void; 
-    options: { value: string; label: string }[];
-}
+import { RadioGroupProps } from "./InterfaceComponents";
 
 const RadioGroup = ({ label, name, value, onChange, options, error }:RadioGroupProps) => {
     return (

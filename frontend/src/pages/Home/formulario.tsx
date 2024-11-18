@@ -1,33 +1,15 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
+import { estados, tipoPessoaOptions } from '../../assets/mocks/Dados';
 import Button from '../../components/formulario/Button';
 import Input from '../../components/formulario/Input';
 import RadioGroup from '../../components/formulario/RadioGroup';
 import SearchBar from '../../components/formulario/Select';
 import { buscarCep, buscarCNPJ } from '../../services/Api';
-import { estados, tipoPessoaOptions } from '../../tests/mocks/Dados';
 import { formatCEP, formatCNPJ, formatCPF, formatTelefone } from '../../utils/Funcoes';
 import { schema } from '../../utils/yup';
-
-interface FormData {
-    nome: string;
-    email?: string;
-    telefone: string;
-    cep: string;
-    endereco: string;
-    numero: string;
-    complemento?: string;
-    bairro: string;
-    estado: string;
-    cidade: string;
-    tipoPessoa: 'fisica' | 'juridica';
-    cpf?: string;
-    cnpj?: string;
-    razaoSocial?: string;
-    nomeFantasia?: string;
-}
-
+import { FormData } from './Interface';
 
 export const FormularioPage = () => {
     const { control, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormData>({

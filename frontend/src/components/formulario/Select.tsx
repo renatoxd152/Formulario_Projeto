@@ -1,14 +1,5 @@
 import { ChangeEvent, useState } from 'react';
-
-interface SelectProps {
-    label: string;
-    name: string;
-    value: string;
-    error?: string;
-    disabled?: boolean;
-    onChange: (e: ChangeEvent<HTMLSelectElement>) => void;
-    options: { value: string; label: string }[];
-}
+import { SelectProps } from './InterfaceComponents';
 
 const SelectWithSearch = ({
     label,
